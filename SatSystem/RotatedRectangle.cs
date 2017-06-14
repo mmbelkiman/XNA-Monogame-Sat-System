@@ -119,8 +119,8 @@ namespace SatSystem
         {
             foreach (Vector2 vec2 in pointsVertices)
             {
-                float originX = Position.X + (rectangle.Width / 2);
-                float originY = Position.Y + (rectangle.Height / 2);
+                float originX = Position.X + Origin.X;
+                float originY = Position.Y + Origin.Y;
                 rectangleVertices.Add(RotatePoint(vec2, new Vector2(originX, originY), rotation));
             }
         }
