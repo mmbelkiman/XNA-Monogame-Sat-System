@@ -4,6 +4,8 @@ Class created to work together with Monogame, is a simple implementation of a re
   
 Feel free to change what you need, if you have ideas for improvement, contact and share =]
 
+![](https://media.giphy.com/media/3oFzmr4vs1VLIhfKko/giphy.gif)
+
 # Created by: 
  * Mauricio Terra (@mauriciomta) mauriciomta@gmail.com
  * Marcelo Belkiman (@mmbelkiman) marcelobelkiman@gmail.com
