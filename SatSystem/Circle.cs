@@ -9,15 +9,20 @@ namespace SatSystem
     class Circle : CollideObj
     {
         public int Radius { get; private set; }
-        public int X { get; set; }
-        public int Y { get; set; }
 
         public Circle(int x, int y, int radius, GraphicsDevice graphicsDevice)
         {
-            X = x;
-            Y = y;
+            Position = new Vector2(x, y);
             Radius = radius;
             CreateCircle(graphicsDevice);
+        }
+
+        private void CreateCircle(GraphicsDevice graphicsDevice)
+        {
+            int outerRadius = Radius * 2 + 2;
+            _texture2D = new Texture2D(graphicsDevice, outerRadius, outerRadius);
+
+            SetColor(Color.White);
         }
 
         public override bool Collide(CollideObj collideObj)
@@ -37,14 +42,6 @@ namespace SatSystem
             }
 
             return CollideFlag;
-        }
-
-        private void CreateCircle(GraphicsDevice graphicsDevice)
-        {
-            int outerRadius = Radius * 2 + 2;
-            _texture2D = new Texture2D(graphicsDevice, outerRadius, outerRadius);
-
-            SetColor(Color.White);
         }
 
         public override void SetColor(Color color)
@@ -85,16 +82,13 @@ namespace SatSystem
                 };
 
             foreach (var corner in corners)
-            {
-                if (ContainsPoint(corner))
-                    return true;
-            }
+                if (ContainsPoint(corner)) return true;
 
             // next we want to know if the left, top, right or bottom edges overlap
-            if (X - Radius > rectangle.Right || X + Radius < rectangle.Left)
+            if (Position.X - Radius > rectangle.Right || Position.X + Radius < rectangle.Left)
                 return false;
 
-            if (Y - Radius > rectangle.Bottom || Y + Radius < rectangle.Top)
+            if (Position.Y - Radius > rectangle.Bottom || Position.Y + Radius < rectangle.Top)
                 return false;
 
             return true;
@@ -104,20 +98,20 @@ namespace SatSystem
         {
             // put simply, if the distance between the circle centre's is less than
             // their combined radius
-            var center0 = new Vector2(circle.X, circle.Y);
-            var center1 = new Vector2(X, Y);
+            var center0 = new Vector2(circle.Position.X, circle.Position.Y);
+            var center1 = new Vector2(Position.X, Position.Y);
             return Vector2.Distance(center0, center1) < Radius + circle.Radius;
         }
 
         public bool ContainsPoint(Point point)
         {
-            var vector2 = new Vector2(point.X - X, point.Y - Y);
+            var vector2 = new Vector2(point.X - Position.X, point.Y - Position.Y);
             return vector2.Length() <= Radius;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture2D, new Vector2(X, Y), _color);
+            spriteBatch.Draw(_texture2D, new Vector2(Position.X, Position.Y), _color);
         }
     }
 }
