@@ -11,10 +11,14 @@ namespace SatSystem
 
         RotatedRectangle rotatedRectangle1;
         RotatedRectangle rotatedRectangle2;
+        Circle circle1;
+        Circle circle2;
+
+        bool circle2MoveUp = false;
 
         Rectangle rectangleNormal;
         Texture2D texture2DRectangleNormal;
-        Vector2 rectangleNormalPosition = new Vector2(100, 300);
+        Vector2 rectangleNormalPosition = new Vector2(400, 300);
 
         public Game1()
         {
@@ -54,6 +58,18 @@ namespace SatSystem
                   (int)rectangleNormalPosition.Y,
                   100,
                   100);
+
+            //Circles
+            circle1 = new Circle(
+                80,
+                300,
+                50, GraphicsDevice);
+
+            circle2 = new Circle(
+                   80,
+                   300,
+                   50, GraphicsDevice);
+
         }
 
         protected override void LoadContent() { spriteBatch = new SpriteBatch(GraphicsDevice); }
@@ -62,6 +78,8 @@ namespace SatSystem
 
         protected override void Update(GameTime gameTime)
         {
+            Window.Title = "Monogame Sat System @mmbelkiman";
+
             //Move rectangle 1 with keyboard
             KeyboardState state = Keyboard.GetState();
             Vector2 rotate1Position = rotatedRectangle1.Position;
@@ -73,8 +91,8 @@ namespace SatSystem
 
             rotatedRectangle1.Update();
             rotatedRectangle2.Update();
-            rotatedRectangle1.rotation -= 0.01f;
-            rotatedRectangle2.rotation += 0.01f;
+            rotatedRectangle1.Rotation -= 0.01f;
+            rotatedRectangle2.Rotation += 0.01f;
 
             //Check collisions
             if (rotatedRectangle1.Collide(rotatedRectangle2)
@@ -82,6 +100,27 @@ namespace SatSystem
                 rotatedRectangle1.SetColor(new Color(100, 50, 50, 200));
             else
                 rotatedRectangle1.SetColor(new Color(50, 100, 50, 200));
+
+            if (circle1.Collide(circle2))
+            {
+                circle1.SetColor(new Color(100, 50, 50, 200));
+                circle2.SetColor(new Color(100, 50, 50, 200));
+            }
+            else
+            {
+                circle1.SetColor(new Color(150, 255, 180, 255));
+                circle2.SetColor(new Color(150, 255, 180, 255));
+            }
+
+
+
+            if (circle2MoveUp)
+                circle2.Position = new Vector2(circle2.Position.X, circle2.Y-=2);
+            else
+                circle2.Position = new Vector2(circle2.Position.X, circle2.Y+=2);
+
+            if (circle2.Position.Y > 430) circle2MoveUp = true;
+            else if (circle2.Position.Y < 180) circle2MoveUp = false;
 
             base.Update(gameTime);
         }
@@ -94,6 +133,8 @@ namespace SatSystem
             {
                 rotatedRectangle1.Draw(spriteBatch);
                 rotatedRectangle2.Draw(spriteBatch);
+                circle1.Draw(spriteBatch);
+                circle2.Draw(spriteBatch);
 
                 spriteBatch.Draw(
                          texture2DRectangleNormal,

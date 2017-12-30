@@ -5,63 +5,47 @@
  * 
  * Feel free to change what you need, if you have ideas for improvement, contact and share =]
  *
- * No license, do anything you want with this file ^-~!
  * 
  * Created by: 
- * Maurio Terra (@mauriciomta) mauriciomta@gmail.com
+ * Mauricio Terra (@mauriciomta) mauriciomta@gmail.com
  * Marcelo Belkiman (@mmbelkiman) marcelobelkiman@gmail.com
  * */
 
+#region Using Statements
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+#endregion
 
 namespace SatSystem
 {
-    class RotatedRectangle
+    class RotatedRectangle : CollideObj
     {
-        private int axesCount = 4;
-        private Texture2D texture2D;
-        private Vector2 _position;
-        private Vector2 _origin;
-        private Color color = new Color(100, 100, 200, 100);
-        private Rectangle rectangle;
-        private List<Vector2> rectangleABNormalize = new List<Vector2>();
+        private int _axesCount = 4;
+        private List<Vector2> _rectangleABNormalize = new List<Vector2>();
 
-        public List<Vector2> rectangleVertices = new List<Vector2>();
+        public List<Vector2> RectangleVertices = new List<Vector2>();
         public List<Vector2> rectangleNormalize = new List<Vector2>();
-        public float rotation = 0f;
-        public bool isCollide = true;
-        public Vector2 Position
-        {
-            get { return _position; }
-            set { _position = value; }
-        }
-        public Vector2 Origin
-        {
-            get { return _origin; }
-            set { _origin = value; }
-        }
 
         public RotatedRectangle(GraphicsDevice graphicsDevice,
-            Vector2 position,
-            Vector2 origin,
-            int width, int height)
+                                Vector2 position,
+                                Vector2 origin,
+                                int width, int height)
         {
             Position = position;
             Origin = origin;
 
             if (graphicsDevice != null)
             {
-                texture2D = new Texture2D(graphicsDevice, 1, 1);
+                _texture2D = new Texture2D(graphicsDevice, 1, 1);
 
                 Color[] data = new Color[1 * 1];
-                data[0] = color;
-                texture2D.SetData(data);
+                data[0] = _color;
+                _texture2D.SetData(data);
             }
 
-            rectangle = new Rectangle(
+            Rectangle = new Rectangle(
                         (int)Position.X,
                         (int)Position.Y,
                          width,
@@ -70,9 +54,9 @@ namespace SatSystem
 
         public void Update()
         {
-            rectangleVertices = new List<Vector2>();
+            RectangleVertices = new List<Vector2>();
             rectangleNormalize = new List<Vector2>();
-            rectangleABNormalize = new List<Vector2>();
+            _rectangleABNormalize = new List<Vector2>();
 
             List<Vector2> pointsVertices = GetPointsVertices();
             UpdateVertices(pointsVertices);
@@ -80,37 +64,15 @@ namespace SatSystem
             List<Vector2> perpendicularRectangles = GetPerpendicularRectangles(subtractedVectors);
             Normalize(perpendicularRectangles);
         }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(
-                     texture2D,
-                     new Vector2((int)Position.X + Origin.X,
-                                 (int)Position.Y + Origin.Y),
-                     rectangle,
-                     Color.White,
-                     rotation,
-                     Origin,
-                     1,
-                     SpriteEffects.None,
-                     1);
-        }
-
-        public void SetColor(Color color)
-        {
-            Color[] data = new Color[1 * 1];
-            data[0] = color;
-            texture2D.SetData(data);
-        }
-
+       
         private List<Vector2> GetPointsVertices()
         {
             List<Vector2> pointsVertices = new List<Vector2>
             {
                 new Vector2(Position.X, Position.Y),
-                new Vector2(Position.X + rectangle.Width, Position.Y),
-                new Vector2(Position.X + rectangle.Width, Position.Y + rectangle.Height),
-                new Vector2(Position.X, Position.Y + rectangle.Height)
+                new Vector2(Position.X + Rectangle.Width, Position.Y),
+                new Vector2(Position.X + Rectangle.Width, Position.Y + Rectangle.Height),
+                new Vector2(Position.X, Position.Y + Rectangle.Height)
             };
             return pointsVertices;
         }
@@ -121,7 +83,7 @@ namespace SatSystem
             {
                 float originX = Position.X + Origin.X;
                 float originY = Position.Y + Origin.Y;
-                rectangleVertices.Add(RotatePoint(vec2, new Vector2(originX, originY), rotation));
+                RectangleVertices.Add(RotatePoint(vec2, new Vector2(originX, originY), Rotation));
             }
         }
 
@@ -129,17 +91,17 @@ namespace SatSystem
         {
             List<Vector2> subtractedVectors = new List<Vector2>();
 
-            for (int i = 0; i < axesCount; i++)
+            for (int i = 0; i < _axesCount; i++)
             {
-                if (i == axesCount - 1)
+                if (i == _axesCount - 1)
                 {
                     subtractedVectors.Add(
-                        Vector2.Subtract(rectangleVertices[0], rectangleVertices[i]));
+                        Vector2.Subtract(RectangleVertices[0], RectangleVertices[i]));
                 }
                 else
                 {
                     subtractedVectors.Add(
-                        Vector2.Subtract(rectangleVertices[i + 1], rectangleVertices[i]));
+                        Vector2.Subtract(RectangleVertices[i + 1], RectangleVertices[i]));
                 }
             }
             return subtractedVectors;
@@ -149,7 +111,7 @@ namespace SatSystem
         {
             List<Vector2> perpendicularRectangles = new List<Vector2>();
 
-            for (int i = 0; i < axesCount; i++)
+            for (int i = 0; i < _axesCount; i++)
             {
                 perpendicularRectangles.Add(new Vector2(subtractedVectors[i].Y,
                                                         subtractedVectors[i].X * -1));
@@ -160,7 +122,7 @@ namespace SatSystem
 
         private void Normalize(List<Vector2> perpendicularRectangles)
         {
-            for (int i = 0; i < axesCount; i++)
+            for (int i = 0; i < _axesCount; i++)
             {
                 rectangleNormalize.Add(Vector2.Normalize(perpendicularRectangles[i]));
             }
@@ -181,7 +143,7 @@ namespace SatSystem
         public bool Collide(RotatedRectangle rotatedRectangle)
         {
             return Collide(rotatedRectangle.rectangleNormalize,
-                 rotatedRectangle.rectangleVertices);
+                 rotatedRectangle.RectangleVertices);
         }
 
         public bool Collide(
@@ -190,67 +152,60 @@ namespace SatSystem
         {
             foreach (Vector2 vec in rectangleNormalize)
             {
-                rectangleABNormalize.Add(vec);
+                _rectangleABNormalize.Add(vec);
             }
             foreach (Vector2 vec in rectangleBNormalize)
             {
-                rectangleABNormalize.Add(vec);
+                _rectangleABNormalize.Add(vec);
             }
 
-            isCollide = true;
+            CollideFlag = true;
             CalculateDot(rectangleBVertices);
 
-            return isCollide;
+            return CollideFlag;
         }
 
         private void CalculateDot(List<Vector2> rectangleBVertices)
         {
-            foreach (Vector2 vecNormalize in rectangleABNormalize)
+            foreach (Vector2 vecNormalize in _rectangleABNormalize)
             {
-                float dot = Vector2.Dot(vecNormalize, rectangleVertices[0]);
+                float dot = Vector2.Dot(vecNormalize, RectangleVertices[0]);
+                float rectangle1Min = dot;
+                float rectangle1Max = dot;
 
-                float rectangle1Menor = dot;
-                float rectangle1Maior = dot;
                 dot = Vector2.Dot(vecNormalize, rectangleBVertices[0]);
+                float rectangle2Min = dot;
+                float rectangle2Max = dot;
 
-                float rectangle2Menor = dot;
-                float rectangle2Maior = dot;
-
-                foreach (Vector2 vecPositionOriginal in rectangleVertices)
+                foreach (Vector2 vecPositionOriginal in RectangleVertices)
                 {
                     dot = 0;
                     dot = Vector2.Dot(vecNormalize, vecPositionOriginal);
 
-                    if (dot < rectangle1Menor)
-                        rectangle1Menor = dot;
-                    if (dot > rectangle1Maior)
-                        rectangle1Maior = dot;
+                    if (dot < rectangle1Min) rectangle1Min = dot;
+                    if (dot > rectangle1Max) rectangle1Max = dot;
                 }
                 foreach (Vector2 vecPositionOriginal in rectangleBVertices)
                 {
                     dot = 0;
                     dot = Vector2.Dot(vecNormalize, vecPositionOriginal);
 
-                    if (dot < rectangle2Menor)
-                        rectangle2Menor = dot;
-                    if (dot > rectangle2Maior)
-                        rectangle2Maior = dot;
+                    if (dot < rectangle2Min) rectangle2Min = dot;
+                    if (dot > rectangle2Max) rectangle2Max = dot;
                 }
 
                 //have overlaps between Rectangles (i.e : MinB is less MaxA ?)
                 //Then are detecting collision on this Axis
-                if (
-                    rectangle2Maior >= rectangle1Maior &&
-                    rectangle1Maior < rectangle2Menor)
+                if (rectangle2Max >= rectangle1Max
+                    && rectangle1Max < rectangle2Min)
                 {
-                    isCollide = false;
+                    CollideFlag = false;
                     break;
                 }
-                else if (
-                    rectangle1Maior >= rectangle2Maior &&
-                    rectangle2Maior < rectangle1Menor)
+                else if (rectangle1Max >= rectangle2Max
+                    && rectangle2Max < rectangle1Min)
                 {
-                    isCollide = false;
+                    CollideFlag = false;
                     break;
                 }
             }
@@ -261,12 +216,12 @@ namespace SatSystem
             Vector2 aTranslatedPoint = new Vector2()
             {
                 X = (float)(origin.X + (point.X - origin.X)
-                * Math.Cos(rotation) - (point.Y - origin.Y)
-                * Math.Sin(rotation)),
+                     * Math.Cos(rotation) - (point.Y - origin.Y)
+                     * Math.Sin(rotation)),
 
                 Y = (float)(origin.Y + (point.Y - origin.Y)
-                * Math.Cos(rotation) + (point.X - origin.X)
-                * Math.Sin(rotation))
+                     * Math.Cos(rotation) + (point.X - origin.X)
+                     * Math.Sin(rotation))
             };
             return aTranslatedPoint;
         }

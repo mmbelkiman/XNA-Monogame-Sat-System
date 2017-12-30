@@ -5,12 +5,12 @@ Class created to work together with Monogame, is a simple implementation of a re
 Feel free to change what you need, if you have ideas for improvement, contact and share =]
 
 # Created by: 
- * Maurio Terra (@mauriciomta) mauriciomta@gmail.com
+ * Mauricio Terra (@mauriciomta) mauriciomta@gmail.com
  * Marcelo Belkiman (@mmbelkiman) marcelobelkiman@gmail.com
 
 # Installation
 
-Copy file RotatedRectangle.cs to your project. Yeah, thats all. (need Monogame/XNA)
+Copy file RotatedRectangle.cs, Circle.cs, CollideObj.cs to your project. Yeah, thats all. (need Monogame/XNA)
 
 # Example
 You can see Game1.cs to see how to use
@@ -65,4 +65,4 @@ spriteBatch.End();
 ```
 
 # License
-No license, do anything you want with this files ^-~!
+Under MIT license
