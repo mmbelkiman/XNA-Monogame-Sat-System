@@ -66,5 +66,7 @@ spriteBatch.Begin();
 spriteBatch.End();
 ```
 
+[![kofi](https://az743702.vo.msecnd.net/cdn/kofi2.png)](https://ko-fi.com/B0B2KE8I)
+
 # License
 Under MIT license
