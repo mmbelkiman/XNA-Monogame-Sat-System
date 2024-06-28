@@ -3,6 +3,7 @@
 This class is designed to work with Monogame and provides a simple implementation of a rectangle with rotation and collision detection using the Separating Axis Theorem (SAT).
 
 Feel free to make any modifications you need. If you have ideas for improvement, please contact and share them! =]
+
 ![demo](https://github.com/mmbelkiman/XNA-Monogame-Sat-System/assets/6968452/f8a472be-ed85-4cf0-a403-46d391ae57ff)
 
 # Created by: 
