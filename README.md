@@ -1,10 +1,9 @@
 # XNA Monogame Sat System
 
-Class created to work together with Monogame, is a simple implementation of a rectangle with rotation and collision using SAT (Separating Axis Theorem))
-  
-Feel free to change what you need, if you have ideas for improvement, contact and share =]
+This class is designed to work with Monogame and provides a simple implementation of a rectangle with rotation and collision detection using the Separating Axis Theorem (SAT).
 
-![](https://media.giphy.com/media/3oFzmr4vs1VLIhfKko/giphy.gif)
+Feel free to make any modifications you need. If you have ideas for improvement, please contact and share them! =]
+![demo](https://github.com/mmbelkiman/XNA-Monogame-Sat-System/assets/6968452/f8a472be-ed85-4cf0-a403-46d391ae57ff)
 
 # Created by: 
  * Mauricio Terra (@mauriciomta) mauriciomta@gmail.com
@@ -65,8 +64,6 @@ spriteBatch.Begin();
     rotatedRectangleA.Draw(spriteBatch);
 spriteBatch.End();
 ```
-
-[![kofi](https://az743702.vo.msecnd.net/cdn/kofi2.png)](https://ko-fi.com/B0B2KE8I)
 
 # License
 Under MIT license
